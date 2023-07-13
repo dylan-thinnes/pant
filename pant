@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+stty -echo
+echo -e "\e[?1000;1002;1006;1015h"
+while read -s -n 1 char; do
+  echo -n "$char" | tr '\33Mm' '\n\n\n'
+done | sed -nE '''
+1{s/.*/1/}
+s/^[1-7]*([1-7])$/\x1b[4\1m \x1b[0m/
+  T skip
+    h;s/.*//
+  b end;:skip
+s/\[<?(0|32|64);([0-9]+);([0-9]+)/\x1b[\3;\2H/
+  T end
+    s/\n//g;G;s/\n//g
+    p
+  b end
+:end
+'''
+stty echo

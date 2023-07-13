@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+gcc longer-pant.c && (stty raw -echo; echo -e "\e[?1000;1002;1006;1015h" && ./a.out 2>/dev/null; stty -raw echo) && rm a.out
