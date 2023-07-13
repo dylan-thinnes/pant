@@ -1,4 +1,4 @@
-Pant is paint (un)*i*mproved.
+Pant is paint (un)**i**mproved.
 
 Run it in your terminal and you can draw.
 
