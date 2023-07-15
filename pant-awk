@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+function reset_tty { stty -raw echo; }
+stty raw -echo isig
+trap reset_tty SIGINT
+echo -e '\e[?1000;1002;1006;1012h'
+awk -v RS='\x1b' -v FS='[^0-9]+' '{printf "\x1b[%d;%dHX", $4, $3}'
+reset_tty
