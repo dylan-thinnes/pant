@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+# Most permissive help flag ever
+if [[ "$1" =~ -+h+e*l*p* ]]; then
+  echo 'Usage: run the server with ./pant-nc <char> <bg color 0-7> <"server" or "client" or custom command>'
+  exit 0
+fi
+
+# Parse args, set up server / client commands
+text="$1"
+color="$2"
+shift; shift
+function server { nc -I 1 -k -l localhost 7777; }
+function client { nc -I 1 localhost 7777; }
+
+# Setup TTY with reset on cancel
+function reset_tty { stty -raw echo; }
+stty raw -echo isig
+trap reset_tty SIGINT
+
+# Turn on mouse tracking
+echo -e '\e[?1000;1002;1006;1012h'
+
+# Implement pant logic in tiny bit of awk
+awk -v RS='\x1b' -v FS='[^0-9]+' -v text="$text" -v color="$color" '''
+{
+  printf "\x1b[%d;%dH\x1b[%dm%s\x1b[0m", $4, $3, color + 40, text
+  fflush(stdout)
+}
+''' | tee >("$@") # Replicate output into server, client, or command
+
+# Reset TTY
+reset_tty
