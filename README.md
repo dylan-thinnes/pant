@@ -10,4 +10,4 @@ Comes in awk and networked varieties!
 
 ![man in a box drawn in a terminal](/maninbox.png)
 
-![shared sessions](/pant-nc.mp4)
+https://github.com/dylan-thinnes/pant/assets/19480777/a7ca6901-c796-4ce3-a1f0-9f4ce8bb676a
